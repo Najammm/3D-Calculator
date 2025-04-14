@@ -41,7 +41,7 @@ const ROICalculator = () => {
 
   // State for traditional info (Slide 2)
   const [traditionalInfo, setTraditionalInfo] = useState({
-    numberOfPersonnel: 2,
+    surveyorCount: 2,
     hourlyRate: 65,
     fieldMeasurementHours: 24,
     deliverablesHours: 40,
@@ -206,7 +206,7 @@ const ROICalculator = () => {
       },
       TRADITIONAL_SETUP: {
         Monthly_Projects: traditionalInfo.monthlyProjects,
-        Number_of_Personnel: traditionalInfo.numberOfPersonnel,
+        Number_of_Personnel: traditionalInfo.surveyorCount,
         Hourly_Rate: `$${traditionalInfo.hourlyRate}`,
         Field_Measurement_Hours: `$${traditionalInfo.fieldMeasurementHours}`,
         Deliverables_Hours: traditionalInfo.deliverablesHours,
