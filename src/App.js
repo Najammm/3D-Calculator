@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./index.css";
 import {
   BarChart,
   Bar,
@@ -220,13 +219,14 @@ const ROICalculator = () => {
         Processing_Time: scanningInfo.processingHours,
       },
       ROI_CALCULATOR: {
-        Time_Efficiency_Gain: `${data.timeEfficiencyGain.toFixed(1)}%`,
+        Time_Efficiency_Gain: `${data.productivityIncrease.toFixed(1)}%`,
         Annual_ROI: `${data.roi.toFixed(1)}%`,
         Five_Year_ROI: `${data.fiveYearROI.toFixed(1)}%`,
         Monthly_Time_Savings: `${data.timeSavings.toFixed(1)} hours`,
         Breakeven_Point: data.breakeven
           ? `${data.breakeven.toFixed(1)} months`
           : "N/A",
+        Total_investment: scanningInfo?.initialInvestment,
       },
       Generated_On: new Date().toLocaleString(),
     };
@@ -242,14 +242,12 @@ const ROICalculator = () => {
     // Construct the full URL with the roidata parameter
     const apiUrl = `https://www.zohoapis.com/crm/v7/functions/rts_roi_v2026/actions/execute?auth_type=apikey&zapikey=1003.fbdcd3c87c9b3217f06707a5bdf03400.058c11de15744d85b481b76aa7b2f8bf&roidata=${encodedRoiData}`;
 
-    console.log("Sending data to Zoho API");
     // console.log("API URL:", apiUrl);
 
     // Create an image object to trigger the URL (this is a way to make a request without waiting for response)
     const img = new Image();
     img.src = apiUrl;
 
-    // Move to the next slide immediately
     setCurrentSlide(3);
   };
 
@@ -288,7 +286,7 @@ const ROICalculator = () => {
     const traditionalPerProjectCost =
       traditionalTotalHours *
       traditionalInfo.hourlyRate *
-      traditionalInfo.numberOfPersonnel;
+      traditionalInfo.surveyorCount;
     const traditionalMonthlyCost =
       traditionalPerProjectCost * traditionalInfo.monthlyProjects; // Monthly cost
 
@@ -307,7 +305,7 @@ const ROICalculator = () => {
       scanningMonthlyCost + scanningInfo.initialInvestment / 36; // Including amortized equipment cost (3 years)
 
     // Calculate productivity increase (reduction in time)
-    const timeEfficiencyGain =
+    const productivityIncrease =
       ((traditionalTotalHours - scanningTotalHours) / traditionalTotalHours) *
       100;
 
@@ -412,7 +410,7 @@ const ROICalculator = () => {
       combinedData: displayData,
       traditionalCosts,
       scanningCosts,
-      timeEfficiencyGain,
+      productivityIncrease,
       roi,
       breakeven,
       fiveYearROI,
@@ -423,8 +421,13 @@ const ROICalculator = () => {
       reworkPercentage,
       reworkCostSavings,
     });
-
-    return { roi, breakeven, fiveYearROI, timeSavings, timeEfficiencyGain };
+    return {
+      fiveYearROI,
+      productivityIncrease,
+      roi,
+      timeSavings,
+      breakeven,
+    };
   };
 
   // Calculate detailed benefit analysis
@@ -875,7 +878,7 @@ const ROICalculator = () => {
           <div>
             <h3 className="text-lg font-semibold">Time Efficiency Gain</h3>
             <p className="text-3xl font-bold text-blue-600">
-              {roiData.timeEfficiencyGain.toFixed(1)}%
+              {roiData.productivityIncrease.toFixed(1)}%
             </p>
           </div>
         </div>
@@ -1506,12 +1509,12 @@ const ROICalculator = () => {
             </button>
           )}
 
-          {/* {currentSlide === 4 && (
+          {currentSlide === 4 && (
             <button className="flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition duration-200">
               Generate Report
               <ArrowRight size={16} className="ml-2" />
             </button>
-          )} */}
+          )}
         </div>
       </div>
     </div>
